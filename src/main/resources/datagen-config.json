@@ -1,0 +1,13 @@
+{
+  "name": "datagen-sensor9",
+  "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+  "kafka.topic": "device-data.sensor9",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "value.converter.schemas.enable": "false",
+  "max.interval": 500,
+  "iterations": "-1",
+  "tasks.max": "1",
+  "schema.keyfield": "sensor_name",
+  "schema.string": "{\"namespace\": \"\",\"name\": \"sensor\",\"type\": \"record\",\"fields\": [{\"name\": \"sensor_name\",\"type\": {\"type\": \"string\",\"arg.properties\": {\"options\": [\"sensor9\"]}}},{\"name\": \"tower_name\",\"type\": {\"type\": \"string\",\"arg.properties\": {\"options\": [\"TOWER_3\"]}}},{\"name\": \"event_time\",\"type\": {\"type\": \"long\",\"logicalType\": \"timestamp-millis\"}},{\"name\": \"confidence\",\"type\": {\"type\": \"int\",\"arg.properties\": {\"range\": {\"min\": 0,\"max\": 100}}}},{\"name\": \"event_data\",\"type\": {\"type\": \"int\",\"arg.properties\": {\"iteration\": {\"start\": 0}}}}]}"
+}

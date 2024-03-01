@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tower Health Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="css/reset.css?v=1.0">
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+</head>
+<body>
+<header id="header">
+    <h1>Sensor Status</h1>
+</header>
+<div id="main">
+    <table class="tower-health-table">
+        <thead>
+        <tr>
+            <th>Sensor Name</th>
+            <th>Tower Name</th>
+<!--            <th>Event Confidence</th>-->
+<!--            <th>Event Data</th>-->
+            <th>Last Update</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody id="tower-health-table-body">
+        <tr th:each="data: ${sensorData}" class="tower-health-row">
+            <td th:text="${data.name}" />
+            <td th:text="${data.tower}" />
+<!--            <td th:text="${data.confidence}" />-->
+<!--            <td th:text="${data.data}" />-->
+            <td th:text="${data.timestamp}" />
+            <td th:text="unknown" />
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
