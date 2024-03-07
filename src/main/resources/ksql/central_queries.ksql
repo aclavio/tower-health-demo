@@ -1,0 +1,54 @@
+-- will need to recreate the incomming sensor streams with cluster link prefix
+CREATE OR REPLACE STREAM edge3_sensor7_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  confidence INT,
+  event_data INT,
+  ts BIGINT
+) 
+WITH (kafka_topic='cp-edge3-device-data.sensor7_priority', value_format='json');
+
+CREATE OR REPLACE STREAM edge3_sensor8_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  confidence INT,
+  event_data INT,
+  ts BIGINT
+)
+WITH (kafka_topic='cp-edge3-device-data.sensor8_priority', value_format='json');
+
+CREATE OR REPLACE STREAM edge3_sensor9_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  confidence INT,
+  event_data INT,
+  ts BIGINT
+)
+WITH (kafka_topic='cp-edge3-device-data.sensor9_priority', value_format='json');
+
+-- create joined stream
+DROP STREAM IF EXISTS union_sensors_stream;
+CREATE STREAM union_sensors_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  confidence INT,
+  event_data INT,
+  ts BIGINT
+)
+WITH (kafka_topic='union_sensors', value_format='json', partitions=3);
+
+-- insert all of the source sensor streams into the joined stream
+INSERT INTO union_sensors_stream
+SELECT *
+FROM edge3_sensor7_stream
+EMIT CHANGES;
+
+INSERT INTO union_sensors_stream
+SELECT *
+FROM edge3_sensor8_stream
+EMIT CHANGES;
+
+INSERT INTO union_sensors_stream
+SELECT *
+FROM edge3_sensor9_stream
+EMIT CHANGES;

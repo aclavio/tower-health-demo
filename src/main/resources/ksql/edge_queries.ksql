@@ -1,0 +1,73 @@
+-- create base streams
+CREATE OR REPLACE STREAM sensor7_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  event_time BIGINT,
+  confidence INT,
+  event_data INT
+) 
+WITH (kafka_topic='device-data.sensor7', value_format='json');
+
+CREATE OR REPLACE STREAM sensor8_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  event_time BIGINT,
+  confidence INT,
+  event_data INT
+)
+WITH (kafka_topic='device-data.sensor8', value_format='json');
+
+CREATE OR REPLACE STREAM sensor9_stream (
+  sensor_name STRING KEY,
+  tower_name STRING,
+  event_time BIGINT,
+  confidence INT,
+  event_data INT
+)
+WITH (kafka_topic='device-data.sensor9', value_format='json');
+
+-- create filtered streams
+DROP STREAM IF EXISTS sensor7_priority_stream;
+
+CREATE STREAM sensor7_priority_stream 
+WITH (kafka_topic='device-data.sensor7_priority', value_format='json')
+AS SELECT 
+  sensor_name,
+  tower_name,
+  confidence,
+  event_data,
+  ROWTIME as ts
+FROM  SENSOR7_STREAM
+WHERE confidence > 80
+PARTITION BY sensor_name
+EMIT CHANGES;
+
+DROP STREAM IF EXISTS sensor8_priority_stream;
+
+CREATE STREAM sensor8_priority_stream 
+WITH (kafka_topic='device-data.sensor8_priority', value_format='json')
+AS SELECT 
+  sensor_name,
+  tower_name,
+  confidence,
+  event_data,
+  ROWTIME as ts
+FROM  SENSOR8_STREAM
+WHERE confidence > 80
+PARTITION BY sensor_name
+EMIT CHANGES;
+
+DROP STREAM IF EXISTS sensor9_priority_stream;
+
+CREATE STREAM sensor9_priority_stream 
+WITH (kafka_topic='device-data.sensor9_priority', value_format='json')
+AS SELECT 
+  sensor_name,
+  tower_name,
+  confidence,
+  event_data,
+  ROWTIME as ts
+FROM  SENSOR9_STREAM
+WHERE confidence > 80
+PARTITION BY sensor_name
+EMIT CHANGES;
