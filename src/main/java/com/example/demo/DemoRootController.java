@@ -34,7 +34,7 @@ public class DemoRootController {
         return "index";
     }
 
-    class SensorDataRow {
+    public static class SensorDataRow {
         public String name;
         public String tower;
         public Integer confidence;
@@ -54,9 +54,7 @@ public class DemoRootController {
     public String sensorData(Model model) {
         List<SensorDataRow> sensorData = new ArrayList<>();
         synchronized (sensorDataMap) {
-            Iterator<String> keys = sensorDataMap.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
+            for (String key : sensorDataMap.keySet()) {
                 SensorData data = sensorDataMap.get(key);
                 sensorData.add(new SensorDataRow(key, data));
             }
@@ -72,9 +70,7 @@ public class DemoRootController {
     public List<SensorDataRow> sensorDataRest() {
         List<SensorDataRow> sensorData = new ArrayList<>();
         synchronized (sensorDataMap) {
-            Iterator<String> keys = sensorDataMap.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
+            for (String key : sensorDataMap.keySet()) {
                 SensorData data = sensorDataMap.get(key);
                 sensorData.add(new SensorDataRow(key, data));
             }
